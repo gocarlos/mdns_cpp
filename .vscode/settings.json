@@ -1,0 +1,15 @@
+{
+    "cSpell.words": [
+        "Jansson",
+        "Mattias",
+        "Unlicense",
+        "cmake",
+        "mdns",
+        "mdnscpp",
+        "mkdir"
+    ],
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "files.associations": {
+        "iostream": "cpp"
+    }
+}
