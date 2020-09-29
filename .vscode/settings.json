@@ -3,6 +3,7 @@
         "Jansson",
         "Mattias",
         "Unlicense",
+        "chrono",
         "cmake",
         "mdns",
         "mdnscpp",

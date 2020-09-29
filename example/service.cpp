@@ -15,13 +15,13 @@ void onInterruptHandler(int s) {
 int main() {
   signal(SIGINT, onInterruptHandler);
 
-  mdns_cpp::mDNS service;
+  mdns_cpp::mDNS mdns;
 
-  service.setServiceHostname("AirForce1");
+  mdns.setServiceHostname("AirForce1");
 
-  service.startService();
+  mdns.startService();
 
-  while (1) {
+  while (true) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
   }
 

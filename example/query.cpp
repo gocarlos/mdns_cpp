@@ -20,7 +20,7 @@ int main() {
 
   mdns.executeQuery(service);
 
-  while (1) {
+  while (true) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
   }
 

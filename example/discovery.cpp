@@ -15,11 +15,11 @@ void onInterruptHandler(int s) {
 int main() {
   signal(SIGINT, onInterruptHandler);
 
-  mdns_cpp::mDNS service;
+  mdns_cpp::mDNS mdns;
 
-  service.executeDiscovery();
+  mdns.executeDiscovery();
 
-  while (1) {
+  while (true) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
   }
 
