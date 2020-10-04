@@ -389,7 +389,7 @@ void mDNS::setServicePort(std::uint16_t port) { port_ = port; }
 
 void mDNS::setServiceName(const std::string &name) { name_ = name; }
 
-void mDNS::setServiceTxtRecord(const std::string txt_record) { txt_record_ = txt_record; }
+void mDNS::setServiceTxtRecord(const std::string &txt_record) { txt_record_ = txt_record; }
 
 void mDNS::runMainLoop() {
   constexpr size_t number_of_sockets = 32;
