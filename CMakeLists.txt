@@ -22,15 +22,22 @@ target_include_directories(
                          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 target_sources(
   ${PROJECT_NAME}
-  PRIVATE include/mdns_cpp/defs.hpp src/mdns.h src/mdns.cpp
-          include/mdns_cpp/mdns.hpp src/utils.cpp include/mdns_cpp/utils.hpp)
+  PRIVATE include/mdns_cpp/macros.hpp
+          include/mdns_cpp/defs.hpp
+          src/mdns.h
+          src/mdns.cpp
+          include/mdns_cpp/mdns.hpp
+          src/utils.cpp
+          include/mdns_cpp/utils.hpp)
 
 if(MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE /W4)
 else()
   target_compile_options(
     ${PROJECT_NAME}
-    PRIVATE -Wall -Wextra -pedantic
+    PRIVATE -Wall
+            -Wextra
+            -pedantic
             # mdns.h uses static functions in the header file
             -Wno-unused-function)
 endif()
@@ -79,8 +86,8 @@ write_basic_package_version_file(
 
 configure_package_config_file(
   "${PROJECT_SOURCE_DIR}/cmake/Config.cmake.in"
-  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-  INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake" INSTALL_DESTINATION
+  ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
 
 install(
   EXPORT ${PROJECT_NAME}_Targets
