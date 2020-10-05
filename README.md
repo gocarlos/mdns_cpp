@@ -9,6 +9,7 @@ why does this exist:
 * better integration in C++ projects
 * better usage of modern C++ features
 * higher level API
+* pass logger function to library to use users logger
 
 ## Features
 

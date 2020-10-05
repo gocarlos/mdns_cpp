@@ -19,6 +19,27 @@
 namespace mdns_cpp {
 
 static mdns_record_txt_t txtbuffer[128];
+static bool logger_registered = false;
+static std::function<void(const std::string &)> g_logging_callback_function;
+
+class mDNSLogger {
+ public:
+  mDNSLogger() = default;
+  template <typename T>
+  friend mDNSLogger &operator<<(mDNSLogger &, const T &input);
+};
+
+template <typename T>
+mDNSLogger &operator<<(mDNSLogger &logger, const T &input) {
+  if (logger_registered) {
+    g_logging_callback_function(input);
+  } else {
+    std::cout << input;
+  }
+  return logger;
+}
+
+static mDNSLogger mDNSlogger;
 
 int mDNS::openServiceSockets(int *sockets, int max_sockets) {
   // When receiving, each socket can receive data from all network interfaces
@@ -87,7 +108,7 @@ int mDNS::openClientSockets(int *sockets, int max_sockets, int port) {
 
   if (!adapter_address || (ret != NO_ERROR)) {
     free(adapter_address);
-    MDNS_LOG << "Failed to get network adapter addresses\n";
+    mDNSlogger << "Failed to get network adapter addresses\n";
     return num_sockets;
   }
 
@@ -394,6 +415,11 @@ void mDNS::setServiceName(const std::string &name) { name_ = name; }
 
 void mDNS::setServiceTxtRecord(const std::string &txt_record) { txt_record_ = txt_record; }
 
+void mDNS::setLogger(std::function<void(const std::string &)> logging_callback_function) {
+  logger_registered = true;
+  g_logging_callback_function = logging_callback_function;
+}
+
 void mDNS::runMainLoop() {
   constexpr size_t number_of_sockets = 32;
   int sockets[number_of_sockets];
@@ -404,7 +430,8 @@ void mDNS::runMainLoop() {
     throw std::runtime_error(msg);
   }
 
-  MDNS_LOG << "Opened " << num_sockets << " socket" << (num_sockets ? "s" : "") << " for mDNS service\n";
+  mDNSlogger << "Opened " << std::to_string(num_sockets) << " socket" << (num_sockets ? "s" : "")
+             << " for mDNS service\n";
   MDNS_LOG << "Service mDNS: " << name_ << ":" << port_ << "\n";
   MDNS_LOG << "Hostname: " << hostname_.data() << "\n";
 

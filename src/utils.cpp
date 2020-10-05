@@ -28,7 +28,6 @@ std::string getHostName() {
   const char *hostname = "dummy-host";
 
 #ifdef _WIN32
-
   WORD versionWanted = MAKEWORD(1, 1);
   WSADATA wsaData;
   if (WSAStartup(versionWanted, &wsaData)) {
@@ -63,10 +62,11 @@ std::string ipv4AddressToString(char *buffer, size_t capacity, const sockaddr_in
                               NI_NUMERICSERV | NI_NUMERICHOST);
   int len = 0;
   if (ret == 0) {
-    if (addr->sin_port != 0)
+    if (addr->sin_port != 0) {
       len = snprintf(buffer, capacity, "%s:%s", host, service);
-    else
+    } else {
       len = snprintf(buffer, capacity, "%s", host);
+    }
   }
   if (len >= (int)capacity) {
     len = (int)capacity - 1;
@@ -83,9 +83,11 @@ std::string ipv6AddressToString(char *buffer, size_t capacity, const sockaddr_in
   int len = 0;
   if (ret == 0) {
     if (addr->sin6_port != 0) {
-      len = snprintf(buffer, capacity, "[%s]:%s", host, service);
+      {
+        len = snprintf(buffer, capacity, "[%s]:%s", host, service);
+      }
     } else {
-      len = snprintf(buffer, capacity, "%s", host);
+      { len = snprintf(buffer, capacity, "%s", host); }
     }
   }
   if (len >= (int)capacity) {
