@@ -80,8 +80,8 @@ std::string ipv4AddressToString(char *buffer, size_t capacity, const sockaddr_in
 std::string ipv6AddressToString(char *buffer, size_t capacity, const sockaddr_in6 *addr, size_t addrlen) {
   char host[NI_MAXHOST] = {0};
   char service[NI_MAXSERV] = {0};
-  int ret = getnameinfo((const struct sockaddr *)addr, (socklen_t)addrlen, host, NI_MAXHOST, service, NI_MAXSERV,
-                        NI_NUMERICSERV | NI_NUMERICHOST);
+  const int ret = getnameinfo((const struct sockaddr *)addr, (socklen_t)addrlen, host, NI_MAXHOST, service, NI_MAXSERV,
+                              NI_NUMERICSERV | NI_NUMERICHOST);
   int len = 0;
   if (ret == 0) {
     if (addr->sin6_port != 0) {
@@ -89,7 +89,7 @@ std::string ipv6AddressToString(char *buffer, size_t capacity, const sockaddr_in
         len = snprintf(buffer, capacity, "[%s]:%s", host, service);
       }
     } else {
-      { len = snprintf(buffer, capacity, "%s", host); }
+      len = snprintf(buffer, capacity, "%s", host);
     }
   }
   if (len >= (int)capacity) {

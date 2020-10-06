@@ -59,10 +59,6 @@ if(MDNS_CPP_BUILD_EXAMPLE)
   add_executable(${PROJECT_NAME}_service_example example/service.cpp)
   target_link_libraries(${PROJECT_NAME}_service_example ${PROJECT_NAME}
                         Threads::Threads)
-  add_executable(${PROJECT_NAME}_service_with_logger_example
-                 example/service_with_logger.cpp)
-  target_link_libraries(${PROJECT_NAME}_service_with_logger_example
-                        ${PROJECT_NAME} Threads::Threads)
   add_executable(${PROJECT_NAME}_discovery_example example/discovery.cpp)
   target_link_libraries(${PROJECT_NAME}_discovery_example ${PROJECT_NAME}
                         Threads::Threads)
