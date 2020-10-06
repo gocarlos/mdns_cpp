@@ -23,8 +23,6 @@ class mDNS {
   void setServiceName(const std::string &name);
   void setServiceTxtRecord(const std::string &text_record);
 
-  void setLogger(std::function<void(const std::string &)>);
-
   void executeQuery(const std::string &service);
   void executeDiscovery();
 

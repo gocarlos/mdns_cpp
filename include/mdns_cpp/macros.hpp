@@ -1,5 +1,5 @@
 #pragma once
 
-#include <iostream>
+#include "mdns_cpp/logger.hpp"
 
-#define MDNS_LOG (std::cout << __FILE__ << " " << __LINE__ << " ")
+#define MDNS_LOG (LogMessage(__FILE__, __LINE__))

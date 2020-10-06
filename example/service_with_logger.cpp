@@ -1,3 +1,4 @@
+
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,6 +7,7 @@
 #include <thread>
 
 #include "mdns_cpp/mdns.hpp"
+#include "mdns_cpp/logger.hpp"
 
 #ifdef _WIN32
 #include <winsock2.h>
@@ -36,7 +38,10 @@ int main() {
 
   mdns.startService();
 
-  mdns.setLogger([](const std::string& log_msg) { std::cout << "MDNS_SERVICE: " << log_msg << std::endl; });
+  mdns_cpp::Logger::setLoggerSink([](const std::string& log_msg) {
+    std::cout << "MDNS_LIBRARY: " << log_msg ;
+    std::flush(std::cout);
+  });
 
   while (true) {
     std::this_thread::sleep_for(std::chrono::seconds(1));

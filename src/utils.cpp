@@ -22,6 +22,8 @@
 #include <unistd.h>
 #endif
 
+#include "mdns_cpp/macros.hpp"
+
 namespace mdns_cpp {
 
 std::string getHostName() {
@@ -32,7 +34,7 @@ std::string getHostName() {
   WSADATA wsaData;
   if (WSAStartup(versionWanted, &wsaData)) {
     const auto msg = "Error: Failed to initialize WinSock";
-    std::cerr << msg << std::endl;
+    MDNS_LOG << msg << "\n";
     throw std::runtime_error(msg);
   }
 
