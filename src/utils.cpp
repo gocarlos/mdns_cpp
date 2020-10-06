@@ -22,18 +22,19 @@
 #include <unistd.h>
 #endif
 
+#include "mdns_cpp/macros.hpp"
+
 namespace mdns_cpp {
 
 std::string getHostName() {
   const char *hostname = "dummy-host";
 
 #ifdef _WIN32
-
   WORD versionWanted = MAKEWORD(1, 1);
   WSADATA wsaData;
   if (WSAStartup(versionWanted, &wsaData)) {
     const auto msg = "Error: Failed to initialize WinSock";
-    std::cerr << msg << std::endl;
+    MDNS_LOG << msg << "\n";
     throw std::runtime_error(msg);
   }
 
@@ -63,10 +64,11 @@ std::string ipv4AddressToString(char *buffer, size_t capacity, const sockaddr_in
                               NI_NUMERICSERV | NI_NUMERICHOST);
   int len = 0;
   if (ret == 0) {
-    if (addr->sin_port != 0)
+    if (addr->sin_port != 0) {
       len = snprintf(buffer, capacity, "%s:%s", host, service);
-    else
+    } else {
       len = snprintf(buffer, capacity, "%s", host);
+    }
   }
   if (len >= (int)capacity) {
     len = (int)capacity - 1;
@@ -78,12 +80,14 @@ std::string ipv4AddressToString(char *buffer, size_t capacity, const sockaddr_in
 std::string ipv6AddressToString(char *buffer, size_t capacity, const sockaddr_in6 *addr, size_t addrlen) {
   char host[NI_MAXHOST] = {0};
   char service[NI_MAXSERV] = {0};
-  int ret = getnameinfo((const struct sockaddr *)addr, (socklen_t)addrlen, host, NI_MAXHOST, service, NI_MAXSERV,
-                        NI_NUMERICSERV | NI_NUMERICHOST);
+  const int ret = getnameinfo((const struct sockaddr *)addr, (socklen_t)addrlen, host, NI_MAXHOST, service, NI_MAXSERV,
+                              NI_NUMERICSERV | NI_NUMERICHOST);
   int len = 0;
   if (ret == 0) {
     if (addr->sin6_port != 0) {
-      len = snprintf(buffer, capacity, "[%s]:%s", host, service);
+      {
+        len = snprintf(buffer, capacity, "[%s]:%s", host, service);
+      }
     } else {
       len = snprintf(buffer, capacity, "%s", host);
     }

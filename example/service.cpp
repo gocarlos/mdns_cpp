@@ -5,11 +5,12 @@
 #include <iostream>
 #include <thread>
 
-#include "mdns_cpp/mdns.hpp"
-
 #ifdef _WIN32
 #include <winsock2.h>
 #endif
+
+#include "mdns_cpp/logger.hpp"
+#include "mdns_cpp/mdns.hpp"
 
 void onInterruptHandler(int s) {
   std::cout << "Caught signal: " << s << std::endl;
@@ -20,16 +21,20 @@ int main() {
   signal(SIGINT, onInterruptHandler);
 
 #ifdef _WIN32
-  int iResult;
   WSADATA wsaData;
   // Initialize Winsock
-  iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+  int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
   if (iResult != 0) {
-    printf("WSAStartup failed: %d\n", iResult);
+    std::cout << "WSAStartup failed: " << iResult << "\n";
     return 1;
   }
 #endif
+
+  mdns_cpp::Logger::setLoggerSink([](const std::string& log_msg) {
+    std::cout << "MDNS_LIBRARY: " << log_msg;
+    std::flush(std::cout);
+  });
 
   mdns_cpp::mDNS mdns;
 
