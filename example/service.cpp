@@ -9,8 +9,8 @@
 #include <winsock2.h>
 #endif
 
-#include "mdns_cpp/mdns.hpp"
 #include "mdns_cpp/logger.hpp"
+#include "mdns_cpp/mdns.hpp"
 
 void onInterruptHandler(int s) {
   std::cout << "Caught signal: " << s << std::endl;

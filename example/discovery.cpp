@@ -9,8 +9,8 @@
 #include <winsock2.h>
 #endif
 
-#include "mdns_cpp/mdns.hpp"
 #include "mdns_cpp/logger.hpp"
+#include "mdns_cpp/mdns.hpp"
 
 void onInterruptHandler(int s) {
   std::cout << "Caught signal: " << s << std::endl;
@@ -23,7 +23,7 @@ int main() {
 #ifdef _WIN32
   WSADATA wsaData;
   // Initialize Winsock
-  int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+  const int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
   if (iResult != 0) {
     std::cout << "WSAStartup failed: " << iResult << "\n";
