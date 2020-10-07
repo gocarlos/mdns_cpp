@@ -27,8 +27,15 @@ make install
 
 ## Usage
 
+you can either install the library, include the library as subdirectory or use conan: `mdns_cpp/0.1.0@gocarlos/testing`
+
 ```cmake
-find_package(mdnscpp)
+
+# add subdirectory
+add_subdirectory(vendor/mdns_cpp)
+# or install / use conan
+find_package(mdns_cpp)
+
 add_executable(main main.cpp)
 target_link_libraries(main PRIVATE mdns_cpp::mdns_cpp)
 ```
