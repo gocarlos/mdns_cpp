@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
-project(mdns_cpp VERSION 0.1.0)
+project(
+  mdns_cpp
+  VERSION 0.1.0
+  LANGUAGES CXX)
 
 option(MDNS_CPP_BUILD_EXAMPLE "Build example executables" ON)
 
@@ -37,9 +40,7 @@ if(MSVC)
 else()
   target_compile_options(
     ${PROJECT_NAME}
-    PRIVATE -Wall
-            -Wextra
-            -pedantic
+    PRIVATE -Wall -Wextra -pedantic
             # mdns.h uses static functions in the header file
             -Wno-unused-function)
 endif()
@@ -56,13 +57,16 @@ add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 find_package(Threads REQUIRED)
 
 if(MDNS_CPP_BUILD_EXAMPLE)
-  add_executable(${PROJECT_NAME}_service_example example/service.cpp)
+  add_executable(${PROJECT_NAME}_service_example
+                 ${CMAKE_CURRENT_LIST_DIR}/example/service.cpp)
   target_link_libraries(${PROJECT_NAME}_service_example ${PROJECT_NAME}
                         Threads::Threads)
-  add_executable(${PROJECT_NAME}_discovery_example example/discovery.cpp)
+  add_executable(${PROJECT_NAME}_discovery_example
+                 ${CMAKE_CURRENT_LIST_DIR}/example/discovery.cpp)
   target_link_libraries(${PROJECT_NAME}_discovery_example ${PROJECT_NAME}
                         Threads::Threads)
-  add_executable(${PROJECT_NAME}_query_example example/query.cpp)
+  add_executable(${PROJECT_NAME}_query_example
+                 ${CMAKE_CURRENT_LIST_DIR}/example/query.cpp)
   target_link_libraries(${PROJECT_NAME}_query_example ${PROJECT_NAME}
                         Threads::Threads)
 endif()
@@ -88,8 +92,8 @@ write_basic_package_version_file(
 
 configure_package_config_file(
   "${PROJECT_SOURCE_DIR}/cmake/Config.cmake.in"
-  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake" INSTALL_DESTINATION
-  ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+  INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
 
 install(
   EXPORT ${PROJECT_NAME}_Targets
