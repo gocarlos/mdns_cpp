@@ -23,7 +23,7 @@ void Logger::useDefaultSink() { logger_registered = false; }
 
 LogMessage::LogMessage(const char *file, int line) { os << "[" << file << ":" << line << "] "; }
 
-LogMessage::LogMessage() { os << ">>"; }
+LogMessage::LogMessage() { os << ""; }
 
 LogMessage::~LogMessage() { Logger::LogIt(os.str()); }
 
