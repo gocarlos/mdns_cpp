@@ -344,11 +344,10 @@ int service_callback(int sock, const struct sockaddr *from, size_t addrlen, mdns
       MDNS_LOG << "  --> answer " << service_record->hostname << "." << service_record->service << " port "
                << service_record->port << " (" << (unicast ? "unicast" : "multicast") << ")\n";
       if (!unicast) addrlen = 0;
-      char txt_record[] = "asdf=1";
       mdns_query_answer(sock, from, addrlen, sendbuffer, sizeof(sendbuffer), query_id, service_record->service,
                         service_length, service_record->hostname, strlen(service_record->hostname),
                         service_record->address_ipv4, service_record->address_ipv6, (uint16_t)service_record->port,
-                        txt_record, sizeof(txt_record));
+                        service_record->txt_rec, strlen(service_record->txt_rec));
     }
   } else if (rtype == static_cast<uint16_t>(mdns_record_type::MDNS_RECORDTYPE_SRV)) {
     mdns_record_srv_t service =
@@ -423,6 +422,7 @@ void mDNS::runMainLoop() {
   ServiceRecord service_record{};
   service_record.service = name_.data();
   service_record.hostname = hostname_.data();
+  service_record.txt_rec = txt_record_.data();
   service_record.address_ipv4 = has_ipv4_ ? service_address_ipv4_ : 0;
   service_record.address_ipv6 = has_ipv6_ ? service_address_ipv6_ : 0;
   service_record.port = port_;
