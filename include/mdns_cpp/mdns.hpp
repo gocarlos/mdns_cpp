@@ -5,12 +5,27 @@
 #include <thread>
 
 #include "mdns_cpp/defs.hpp"
+#include "../src/mdns.h" // XXX test
 
 struct sockaddr;
 
 namespace mdns_cpp {
 
-class mDNS {
+struct Query_result {
+  Query_result(std::string hostNam) { 	  
+	  this->hostNam = hostNam;
+  }
+  
+  std::string hostNam;
+  std::string ipV4_adress;
+  std::string ipV6_adress;
+
+  // AAAA
+  // A
+  // SRV
+};
+
+class mDNS { 
  public:
   ~mDNS();
 
@@ -23,8 +38,11 @@ class mDNS {
   void setServiceName(const std::string &name);
   void setServiceTxtRecord(const std::string &text_record);
 
+  std::vector<Query_result> executeQuery2(const std::string &service);
+
   void executeQuery(const std::string &service);
   void executeDiscovery();
+  
 
  private:
   void runMainLoop();
