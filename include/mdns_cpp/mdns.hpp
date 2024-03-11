@@ -23,7 +23,7 @@ class mDNS {
   void setServiceName(const std::string &name);
   void setServiceTxtRecord(const std::string &text_record);
 
-  void executeQuery(const std::string &service);
+  std::list <QueryResult> executeQuery(const std::string &service);
   void executeDiscovery();
 
  private:
