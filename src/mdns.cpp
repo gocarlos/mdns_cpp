@@ -268,8 +268,6 @@ static int query_callback(int sock, const struct sockaddr *from, size_t addrlen,
       (entry == MDNS_ENTRYTYPE_ANSWER) ? "answer" : ((entry == MDNS_ENTRYTYPE_AUTHORITY) ? "authority" : "additional");
   mdns_string_t entrystr = mdns_string_extract(data, size, &name_offset, entrybuffer, sizeof(entrybuffer));
 
-  res->key = entrybuffer;
-
   const int str_capacity = 1000;
   char str_buffer[str_capacity]={};
 

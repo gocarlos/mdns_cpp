@@ -16,7 +16,6 @@ class ServiceRecord {
 
 
 struct QueryResult {
-  std::string key;
   std::string host;
   std::string ipv4;
   std::string ipv6;

@@ -39,7 +39,15 @@ int main() {
   mdns_cpp::mDNS mdns;
   const std::string service = "_http._tcp.local.";
 
-  mdns.executeQuery(service);
+  auto result = mdns.executeQuery(service);
+
+  for (auto item : result) {
+    std::cout << "----------" << std::endl;
+    std::cout << item->host << std::endl;
+    std::cout << item->ipv4 << std::endl;
+    std::cout << item->ipv6 << std::endl;
+    std::cout << "----------" << std::endl;
+  }
 
   while (true) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
