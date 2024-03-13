@@ -579,7 +579,8 @@ void mDNS::executeDiscovery() {
     if (res > 0) {
       for (int isock = 0; isock < num_sockets; ++isock) {
         if (FD_ISSET(sockets[isock], &readfs)) {
-          records += mdns_discovery_recv(sockets[isock], buffer, capacity, query_callback, user_data);
+          auto query_result = std::make_shared<QueryResult>();
+          records += mdns_discovery_recv(sockets[isock], buffer, capacity, query_callback, query_result.get());
         }
       }
     }
