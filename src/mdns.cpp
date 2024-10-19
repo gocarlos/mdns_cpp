@@ -377,13 +377,17 @@ int service_callback(int sock, const struct sockaddr *from, size_t addrlen, mdns
 
 mDNS::~mDNS() { stopService(); }
 
-void mDNS::startService() {
+void mDNS::startService(bool start_thread) {
   if (running_) {
     stopService();
   }
 
   running_ = true;
-  worker_thread_ = std::thread([this]() { this->runMainLoop(); });
+  if(start_thread){
+    worker_thread_ = std::thread([this]() { this->runMainLoop(); });
+  } else {
+    this->runMainLoop();
+  }
 }
 
 void mDNS::stopService() {

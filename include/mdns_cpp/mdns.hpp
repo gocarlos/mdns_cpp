@@ -14,7 +14,7 @@ class mDNS {
  public:
   ~mDNS();
 
-  void startService();
+  void startService(bool start_thread=true);
   void stopService();
   bool isServiceRunning();
 
