@@ -4,9 +4,18 @@
 #include <string>
 #include <thread>
 
-#include "mdns_cpp/defs.hpp"
+#include "mdns_cpp/utils.hpp"
 
-struct sockaddr;
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <iphlpapi.h>
+#else
+#include <ifaddrs.h>
+#include <net/if.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#endif
 
 namespace mdns_cpp {
 
@@ -14,7 +23,7 @@ class mDNS {
  public:
   ~mDNS();
 
-  void startService();
+  void startService(bool dumpMode = false);
   void stopService();
   bool isServiceRunning();
 
@@ -23,11 +32,13 @@ class mDNS {
   void setServiceName(const std::string &name);
   void setServiceTxtRecord(const std::string &text_record);
 
-  void executeQuery(const std::string &service);
+  using ServiceQueries = std::vector<std::pair<std::string, int>>;
+  void executeQuery(ServiceQueries service);
   void executeDiscovery();
 
  private:
   void runMainLoop();
+  void runDumpMode(int *sockets, int num_sockets);
   int openClientSockets(int *sockets, int max_sockets, int port);
   int openServiceSockets(int *sockets, int max_sockets);
 
@@ -36,13 +47,11 @@ class mDNS {
   std::uint16_t port_{42424};
   std::string txt_record_{};
 
-  bool running_{false};
+  std::atomic<bool> running_{false};
+  bool dumpMode_{false};
 
-  bool has_ipv4_{false};
-  bool has_ipv6_{false};
-
-  uint32_t service_address_ipv4_{0};
-  uint8_t service_address_ipv6_[16]{0};
+  struct sockaddr_in service_address_ipv4_;
+  struct sockaddr_in6 service_address_ipv6_;
 
   std::thread worker_thread_;
 };

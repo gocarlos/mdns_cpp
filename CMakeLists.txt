@@ -26,7 +26,6 @@ target_include_directories(
 target_sources(
   ${PROJECT_NAME}
   PRIVATE include/mdns_cpp/macros.hpp
-          include/mdns_cpp/defs.hpp
           include/mdns_cpp/logger.hpp
           src/logger.cpp
           src/mdns.h
